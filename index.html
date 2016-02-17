@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="http://static.tf56.com/report/jeasyui/jquery.min.js"></script>
+    <script type="text/javascript" src="http://static.tf56.com/libs/charts/highcharts-custom.js"></script>
+	<link rel="stylesheet" href="bootstrap-3.3.5/css/bootstrap.min.css">
+	<script src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="angular.js"></script>
+</head>
+
+<body ng-app="chart" ng-controller="ctrl">
+<div class="highcharts-container" style="width: 600px; height: 400px;"></div>
+
+<div class="col-lg-3" ng-repeat="i in filter_data" id="filter_{{i['field']}}">
+	{{mapper[i['field']]}}
+    <div class="input-group">
+		<input type="text" class="form-control" aria-label="..." id="input_{{i['field']}}">
+		<div class="input-group-btn">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="toggleButton_{{i['field']}}">
+				操作 <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><a href="#" ng-repeat="j in i['op']" ng-click="toggleAchieveButton(j, i['field'], filter_data.indexOf(i))">{{mapper[j]}}</a></li>
+			</ul>
+		</div>
+    </div>
+</div>
+
+	<script src="chart_controller.js"></script>
+</body>
