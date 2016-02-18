@@ -53,74 +53,73 @@ chart.controller('ctrl', function($scope, $http){
 					}
 				}
 				var alterIndex = []; //符合过滤条件的数值位置
-
-				//数值相等
-				if ($scope.currentOp[x] == "equal") {
-					for (var i=0; i<alterData.length; i++) {
-						if (alterData[i] == comparor) {
-							alterIndex.push(i);
+				// 过滤开始
+				switch($scope.currentOp[x]) {
+					//数值相等
+					case "equal":
+						for (var i=0; i<alterData.length; i++) {
+							if (alterData[i] == comparor) {
+								alterIndex.push(i);
+							}
 						}
-					}
-					for (var j=0; j<$scope.data["series"].length; j++) {
-						var tmp = $scope.data["series"][j]["data"];
-						$scope.data["series"][j]["data"] = [];
-						for (var k=0; k<alterIndex.length; k++) {
-							$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
+						for (var j=0; j<$scope.data["series"].length; j++) {
+							var tmp = $scope.data["series"][j]["data"];
+							$scope.data["series"][j]["data"] = [];
+							for (var k=0; k<alterIndex.length; k++) {
+								$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
+							}
 						}
-					}
+						break;
+					//数值不等
+					case "notequal":
+						for (var i=0; i<alterData.length; i++) {
+							if (alterData[i] != comparor) {
+								alterIndex.push(i);
+							}
+						}
+						for (var j=0; j<$scope.data["series"].length; j++) {
+							var tmp = $scope.data["series"][j]["data"];
+							$scope.data["series"][j]["data"] = [];
+							for (var k=0; k<alterIndex.length; k++) {
+								$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
+							}
+						}
+						break;
+					//比数值小
+					case "less":
+						for (var i=0; i<alterData.length; i++) {
+							if (alterData[i] < comparor) {
+								alterIndex.push(i);
+							}
+						}
+						for (var j=0; j<$scope.data["series"].length; j++) {
+							var tmp = $scope.data["series"][j]["data"];
+							$scope.data["series"][j]["data"] = [];
+							for (var k=0; k<alterIndex.length; k++) {
+								$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
+							}
+						}
+						break;
+					//比数值大
+					case "greater":
+						for (var i=0; i<alterData.length; i++) {
+							if (alterData[i] > comparor) {
+								alterIndex.push(i);
+							}
+						}
+						for (var j=0; j<$scope.data["series"].length; j++) {
+							var tmp = $scope.data["series"][j]["data"];
+							$scope.data["series"][j]["data"] = [];
+							for (var k=0; k<alterIndex.length; k++) {
+								$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
+							}
+						}
+						break;
+					default:
+						break;
 				}
-				//数值不等
-				else if ($scope.currentOp[x] == "notequal") {
-					for (var i=0; i<alterData.length; i++) {
-						if (alterData[i] != comparor) {
-							alterIndex.push(i);
-						}
-					}
-					for (var j=0; j<$scope.data["series"].length; j++) {
-						var tmp = $scope.data["series"][j]["data"];
-						$scope.data["series"][j]["data"] = [];
-						for (var k=0; k<alterIndex.length; k++) {
-							$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
-						}
-					}
-				}
-				//比数值小
-				else if ($scope.currentOp[x] == "less") {
-					for (var i=0; i<alterData.length; i++) {
-						if (alterData[i] < comparor) {
-							alterIndex.push(i);
-						}
-					}
-					for (var j=0; j<$scope.data["series"].length; j++) {
-						var tmp = $scope.data["series"][j]["data"];
-						$scope.data["series"][j]["data"] = [];
-						for (var k=0; k<alterIndex.length; k++) {
-							$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
-						}
-					}
-				}
-				//比数值大
-				else if ($scope.currentOp[x] == "greater") {
-					for (var i=0; i<alterData.length; i++) {
-						if (alterData[i] > comparor) {
-							alterIndex.push(i);
-						}
-					}
-					for (var j=0; j<$scope.data["series"].length; j++) {
-						var tmp = $scope.data["series"][j]["data"];
-						$scope.data["series"][j]["data"] = [];
-						for (var k=0; k<alterIndex.length; k++) {
-							$scope.data["series"][j]["data"].push(tmp[alterIndex[k]]);
-						}
-					}
-				}
-				console.log(comparor);
 			}
 		}
-		console.log($scope.currentOp);
-		console.log($scope.currentField);
-		console.log(alterData);
-		console.log(alterIndex);
 		
 		setChartData($scope.data); //重新绘制图表
 	});
