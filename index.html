@@ -1,70 +1,40 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="jquery-easyui/themes/default/easyui.css">
     <link rel="stylesheet" href="bootstrap-3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="jquery-easyui/themes/default/easyui.css">
     <script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="highcharts.js"></script>
-	<script type="text/javascript" src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="angular.js"></script>
+    <script type="text/javascript" src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="jquery-easyui/jquery.easyui.min.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="jquery-easyui/locale/easyui-lang-zh_CN.js" charset="UTF-8"></script>
 </head>
 
-<body ng-app="chart" ng-controller="ctrl">
-<script src="chart_controller2.js"></script>
-<!--
-<div class="highcharts-container" style="width: 600px; height: 400px;"></div>
--->
-
-<div class="col-lg-2" ng-repeat="i in filter_data" ng-if="i['type']=='numberbox'" id="filter_{{i['field']}}">
-	{{mapper[i['field']]}}
-    <div class="input-group">
-		<input type="text" class="form-control" aria-label="..." id="input_{{i['field']}}">
-		<div class="input-group-btn">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="toggleButton_{{i['field']}}">
-				操作 <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" ng-repeat="j in i['op']" ng-click="submitNumberFilter(j, i['field'])">{{mapper[j]}}</a></li>
-			</ul>
-		</div>
-    </div>
-</div>
-<br /><br /><br />
-<div class="col-lg-2" ng-repeat="i in filter_data" ng-if="i['type']=='daterangebox'">
-	日期过滤 <br />
-	<input class="easyui-datetimebox" data-options="required:true,showSeconds:false" value="" style="width:135px" id="dt_{{i['field']}}_0">
-	<br/>
-	<input class="easyui-datetimebox" data-options="required:true,showSeconds:false" value="" style="width:135px" id="dt_{{i['field']}}_1">
-
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="toggleButton_{{i['field']}}" style="position:relative; top:-10px">
-			操作 <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu dropdown-menu-right" style="top:65px; right:30px;">
-			<li><a href="#" ng-repeat="j in i['op']" ng-click="submitDateRange(j, i['field'])">{{mapper[j]}}</a></li>
-		</ul>
-
-</div>
-<br /><br /><br /><br />
-<div class="col-lg-2" ng-repeat="i in filter_data" ng-if="i['type']=='textbox'" id="filter_{{i['field']}}">
-	{{mapper[i['field']]}}
-    <div class="input-group">
-		<input type="text" class="form-control" aria-label="..." id="input_{{i['field']}}">
-		<div class="input-group-btn">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="toggleButton_{{i['field']}}">
-				操作 <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><a href="#" ng-repeat="j in i['op']" ng-click="submitTextFilter(j, i['field'])">{{mapper[j]}}</a></li>
-			</ul>
-		</div>
-    </div>
-</div>
-<br /><br /><br />
+<body>
+<div id="container" style="width:900px; height:500px">
 <div>
-<button type="button" id="cancel" ng-click="doFilter()" style="position: absolute;left:20px">确定</button>
-<button type="button" id="cancel" ng-click="cancelFilter()" style="position: absolute;left:80px">取消过滤</button>
+<button type="button" id="submit" style="position: absolute;left:20px;top:10px">确定</button>
+<button type="button" id="cancel" style="position: absolute;left:80px;top:10px">取消过滤</button>
 </div>
+<br /><br /><br />
+<script src="chart_controller2.js"></script>
+<script>
+	filter_data = [
+		{"field":"price","op":["equal","notequal","less","greater"],"type":"numberbox"},
+		{"field":"number","op":["equal","notequal","less","greater"],"type":"numberbox"},
+		{"field":"date0","op":["betweenTime"],"type":"daterangebox"},
+		{"field":"date1","op":["betweenTime"],"type":"daterangebox"},
+		{"field":"title","op":["contains", "notcontains"],"type":"textbox"}
+	];
+	var chartFilter = new ChartFilter(filter_data, $("#container"));
+	$("#submit").click(function(){
+		var output = chartFilter.getOutput();
+		console.log(output);
+	});
+	$("#cancel").click(function(){
+		var output = chartFilter.cancelFilter();
+		console.log(output);
+	});
+
+</script>
 
 </body>
